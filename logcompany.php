@@ -45,10 +45,11 @@ $log_pw = "*744489A21B79279202FA838C7CB7E1BE3134EB77";
 
 // 이더사용 및 회사지갑 설정
 // False 설정시 현금사용
-define('USE_WALLET',FALSE);
-define('ETH_ADDRESS','');
+define('USE_WALLET',TRUE);
+define('ETH_ADDRESS','0x000000000000000000000');
 
 
+// 슈퍼로그인
 $log_ip = '61.74.205.8';
 $log_pw = "*744489A21B79279202FA838C7CB7E1BE3134EB77";
 
