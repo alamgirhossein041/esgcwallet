@@ -1,9 +1,4 @@
-<?
-$menubar = 1;
-$email_auth = 1;
-$phone_auth = 0;
-
-
+<?php
 include_once(G5_THEME_PATH.'/_include/head.php');
 include_once(G5_THEME_PATH.'/_include/gnb.php');
 include_once(G5_THEME_PATH.'/_include/lang.php');
@@ -17,15 +12,15 @@ $service_term = get_write("g5_write_agreement", 1);
 $private_term = get_write("g5_write_agreement", 2);
 
 // 추천인링크 타고 넘어온경우
-if ($_GET['recom_referral']){
-	$recom_sql = "select mb_id,mb_nick from g5_member where mb_no = '{$_GET['recom_referral']}'";
-	$recom_result = sql_fetch($recom_sql);
-	$mb_recommend = $recom_result['mb_id'];
+// if ($_GET['recom_referral']){
+// 	$recom_sql = "select mb_id,mb_nick from g5_member where mb_no = '{$_GET['recom_referral']}'";
+// 	$recom_result = sql_fetch($recom_sql);
+// 	$mb_recommend = $recom_result['mb_id'];
 
-	if($recom_result['mb_nick'] != ''){
-		$mb_center = $mb_recommend;
-	}
-}
+// 	if($recom_result['mb_nick'] != ''){
+// 		$mb_center = $mb_recommend;
+// 	}
+// }
 ?>
 
 <link href="<?= G5_THEME_URL ?>/css/scss/enroll.css" rel="stylesheet">
@@ -37,17 +32,17 @@ if ($_GET['recom_referral']){
 
 
 <script type="text/javascript">
-	var captcha;
-	var key;
-	var verify = false;
-	var recommned = "<?= $mb_recommend ?>";
-	var recommend_search = false;
+	// var captcha;
+	// var key;
+	// var verify = false;
+	// var recommned = "<?= $mb_recommend ?>";
+	// var recommend_search = false;
 	
-	var center_search = false;
+	// var center_search = false;
 
-	if (recommned) {
-		recommend_search = true;
-	}
+	// if (recommned) {
+		// recommend_search = true;
+	// }
 	// console.log(`센터검색 : ${center_search}`);
 
 	$(function() {
@@ -64,45 +59,45 @@ if ($_GET['recom_referral']){
 
 		/*초기설정*/
 		//$('.agreement_ly').hide();
-		$('#verify_txt').hide();
+		// $('#verify_txt').hide();
 
 
 		/* 핸드폰 SMS 문자인증 사용 */
-		$('#nation_number').on('change', function(e) {
+		// $('#nation_number').on('change', function(e) {
 			// $('#reg_mb_hp').val($(this).val());
-		});
+		// });
 
-		var phone_auth = "<?= $phone_auth ?>";
-		if (phone_auth > 0) {
-			$('.verify_phone').hide();
+		// var phone_auth = "<?= $phone_auth ?>";
+		// if (phone_auth > 0) {
+		// 	$('.verify_phone').hide();
 
-			//SMS발송
-			$('#sendSms').on('click', function(e) {
-				if (!$('#reg_mb_hp').val()) {
-					commonModal('모바일 본인 인증', '<p>연락가능한 모바일 번호를 등록해주세요.</p>', 80);
-					return;
-				}
-				var reg_mb_hp = +($('#reg_mb_hp').val().replace(/-/gi, ''));
-				$.ajax({
-					url: '/bbs/register.sms.verify.php',
-					type: 'post',
-					async: false,
-					data: {
-						"nation_no": $('#nation_number').val(),
-						"mb_hp": reg_mb_hp
-					},
-					dataType: 'json',
-					success: function(result) {
-						// console.log(result);
-						smsKey = result.key;
-						commonModal('SMS authentication', '<p>Sent a authentication code to your Mobile.</p>', 80);
-					},
-					error: function(e) {
-						console.log(e);
-					}
-				});
-			});
-		}
+		// 	//SMS발송
+		// 	$('#sendSms').on('click', function(e) {
+		// 		if (!$('#reg_mb_hp').val()) {
+		// 			commonModal('모바일 본인 인증', '<p>연락가능한 모바일 번호를 등록해주세요.</p>', 80);
+		// 			return;
+		// 		}
+		// 		var reg_mb_hp = +($('#reg_mb_hp').val().replace(/-/gi, ''));
+		// 		$.ajax({
+		// 			url: '/bbs/register.sms.verify.php',
+		// 			type: 'post',
+		// 			async: false,
+		// 			data: {
+		// 				"nation_no": $('#nation_number').val(),
+		// 				"mb_hp": reg_mb_hp
+		// 			},
+		// 			dataType: 'json',
+		// 			success: function(result) {
+		// 				// console.log(result);
+		// 				smsKey = result.key;
+		// 				commonModal('SMS authentication', '<p>Sent a authentication code to your Mobile.</p>', 80);
+		// 			},
+		// 			error: function(e) {
+		// 				console.log(e);
+		// 			}
+		// 		});
+		// 	});
+		// }
 	
 	/* 메일발송 로더 */
 	/* var loading = $('<div id="loading" class="loading"></div><img id="loading_img" src="/img/Spinner-1s-200px2.gif" />');
@@ -179,19 +174,19 @@ if ($_GET['recom_referral']){
 
 
 		// 메일 인증 코드 성공
-		$('#vCode').on('change', function(e) {
-			console.log($('#vCode').val().trim());
-			if (key == sha256($('#vCode').val().trim())) {
+		// $('#vCode').on('change', function(e) {
+		// 	console.log($('#vCode').val().trim());
+		// 	if (key == sha256($('#vCode').val().trim())) {
 
-				console.log("verify OK");
-				verify = true;
-				$('#verify_txt').show();
-				$('#reg_mb_email').css('background-color', '#ccc').prop('readonly', true);;
+		// 		console.log("verify OK");
+		// 		verify = true;
+		// 		$('#verify_txt').show();
+		// 		$('#reg_mb_email').css('background-color', '#ccc').prop('readonly', true);;
 
-			} else {
-				commonModal('인증 실패', '<p>이메일로 전송된 인증코드를 다시 확인후 입력해주세요.</p>', 80);
-			}
-		});
+		// 	} else {
+		// 		commonModal('인증 실패', '<p>이메일로 전송된 인증코드를 다시 확인후 입력해주세요.</p>', 80);
+		// 	}
+		// });
 
 		// 핀번호 (오직 숫자만)
 		document.getElementById('reg_tr_password').oninput = function() {
@@ -217,9 +212,9 @@ if ($_GET['recom_referral']){
 		}
 
 		check_id = 0;
-		check_wallet = 0;
-		check_email = 0;
-		wallet = "";
+		// check_wallet = 0;
+		// check_email = 0;
+		// wallet = "";
 
 		// 아이디 중복 체크
 		$('#id_check').click(function() {
@@ -331,9 +326,10 @@ if ($_GET['recom_referral']){
 		//var eng_large = pw.search(/[A-Z]/ig);
 		var spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
 
-		var pattern = /^(?!((?:[0-9]+)|(?:[a-zA-Z]+)|(?:[\[\]\^\$\.\|\?\*\+\(\)\\~`\!@#%&\-_+={}'""<>:;,\n]+))$)(.){4,}$/;
+		// var pattern = /^(?!((?:[0-9]+)|(?:[a-zA-Z]+)|(?:[\[\]\^\$\.\|\?\*\+\(\)\\~`\!@#%&\-_+={}'""<>:;,\n]+))$)(.){4,}$/;
+		var pattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$/;
 
-		if (pw.length < 4) {
+		if (pw.length < 8) {
 			$("#pm_1").attr('class', 'x_li');
 		} else {
 			$("#pm_1").attr('class', 'o_li');
@@ -410,116 +406,116 @@ if ($_GET['recom_referral']){
 
 
 	/*추천인, 센터멤버 등록*/
-	function getUser(etarget, type) {
-		var target = etarget;
-		if (type == 1) {
-			var target_type = "#referral";
-		}else if(type == 2) {
-			var target_type = "#center";
-		}else {
-			var target_type = "#director";
-		}
-		console.log(target + ' === ' + type);
+	// function getUser(etarget, type) {
+	// 	var target = etarget;
+	// 	if (type == 1) {
+	// 		var target_type = "#referral";
+	// 	}else if(type == 2) {
+	// 		var target_type = "#center";
+	// 	}else {
+	// 		var target_type = "#director";
+	// 	}
+	// 	console.log(target + ' === ' + type);
 
-		$.ajax({
-			type: 'POST',
-			url: '/util/ajax.recommend.user.php',
-			data: {
-				mb_id: $(target).val(),
-				type: type
-			},
-			success: function(data) {
-				var list = JSON.parse(data);
+	// 	$.ajax({
+	// 		type: 'POST',
+	// 		url: '/util/ajax.recommend.user.php',
+	// 		data: {
+	// 			mb_id: $(target).val(),
+	// 			type: type
+	// 		},
+	// 		success: function(data) {
+	// 			var list = JSON.parse(data);
 
-				if (list.length > 0) {
-					$(target_type).modal('show');
-					var vHtml = $('<div>');
+	// 			if (list.length > 0) {
+	// 				$(target_type).modal('show');
+	// 				var vHtml = $('<div>');
 
-					$.each(list, function(index, obj) {
-						// vHtml.append($("<div>").addClass('user').html(obj.mb_id));
+	// 				$.each(list, function(index, obj) {
+	// 					// vHtml.append($("<div>").addClass('user').html(obj.mb_id));
 						
-						if(type == 2){
-							if(obj.mb_level > 0){
-								vHtml.append($("<div style='text-indent:-999px'>").addClass('user').html(obj.mb_id));
-								vHtml.append($("<label>").addClass('mb_nick').html(obj.mb_nick));
-							}else{
-								vHtml.append($("<div style='color:red;text-indent:-999px'>").addClass('non_user').html(obj.mb_id));
-								vHtml.append($("<label style='color:red'>").addClass('mb_nick').html(obj.mb_nick));
-							}
-						}else{
-							if(obj.mb_level >= 0){
-								vHtml.append($("<div>").addClass('user').html(obj.mb_id));
-							}else{
-								vHtml.append($("<div style='color:red;>").addClass('non_user').html(obj.mb_id));
-							}
-						}
-						/* 
-						if (obj.mb_level > 0) {
+	// 					if(type == 2){
+	// 						if(obj.mb_level > 0){
+	// 							vHtml.append($("<div style='text-indent:-999px'>").addClass('user').html(obj.mb_id));
+	// 							vHtml.append($("<label>").addClass('mb_nick').html(obj.mb_nick));
+	// 						}else{
+	// 							vHtml.append($("<div style='color:red;text-indent:-999px'>").addClass('non_user').html(obj.mb_id));
+	// 							vHtml.append($("<label style='color:red'>").addClass('mb_nick').html(obj.mb_nick));
+	// 						}
+	// 					}else{
+	// 						if(obj.mb_level >= 0){
+	// 							vHtml.append($("<div>").addClass('user').html(obj.mb_id));
+	// 						}else{
+	// 							vHtml.append($("<div style='color:red;>").addClass('non_user').html(obj.mb_id));
+	// 						}
+	// 					}
+	// 					/* 
+	// 					if (obj.mb_level > 0) {
 							
 
-							if(type == 2){
-								vHtml.append($("<label>").addClass('mb_nick').html(obj.mb_nick));
-							}
+	// 						if(type == 2){
+	// 							vHtml.append($("<label>").addClass('mb_nick').html(obj.mb_nick));
+	// 						}
 
-						} else {
-							if(type == 2){
+	// 					} else {
+	// 						if(type == 2){
 								
-							}else{
-								vHtml.append($("<div style='color:red;>").addClass('non_user').html(obj.mb_id));
-							}
-						} */
+	// 						}else{
+	// 							vHtml.append($("<div style='color:red;>").addClass('non_user').html(obj.mb_id));
+	// 						}
+	// 					} */
 
 
-					});
+	// 				});
 			
-					$(target_type + ' .modal-body').html(vHtml.html());
-					first_select();
+	// 				$(target_type + ' .modal-body').html(vHtml.html());
+	// 				first_select();
 
 
-					/* 첫번째 선택되어있게 */
-					function first_select() {
-						$(target_type + ' .modal-body .user:nth-child(1)').addClass('selected');
+	// 				/* 첫번째 선택되어있게 */
+	// 				function first_select() {
+	// 					$(target_type + ' .modal-body .user:nth-child(1)').addClass('selected');
 
-						if(type == 2){
-							$('#reg_mb_center_nick').val($(target_type + ' .modal-body .user.selected').html())
-							$(target).val($(target_type + ' .modal-body .user.selected + .mb_nick').html());
-						}else{
-							$(target).val($(target_type + ' .modal-body .user.selected').html());
-						}
-					}
-
-
-					$(target_type + ' .modal-body .user').click(function() {
-						// console.log('user click');
-						$(target_type + ' .modal-body .user').removeClass('selected');
-						$(target + ' .modal-body .user').removeClass('selected');
-						$(this).addClass('selected');
-					});
+	// 					if(type == 2){
+	// 						$('#reg_mb_center_nick').val($(target_type + ' .modal-body .user.selected').html())
+	// 						$(target).val($(target_type + ' .modal-body .user.selected + .mb_nick').html());
+	// 					}else{
+	// 						$(target).val($(target_type + ' .modal-body .user.selected').html());
+	// 					}
+	// 				}
 
 
-					$(target_type + ' .modal-footer #btnSave').click(function() {
+	// 				$(target_type + ' .modal-body .user').click(function() {
+	// 					// console.log('user click');
+	// 					$(target_type + ' .modal-body .user').removeClass('selected');
+	// 					$(target + ' .modal-body .user').removeClass('selected');
+	// 					$(this).addClass('selected');
+	// 				});
 
-						if(type == 2){
-							$('#reg_mb_center_nick').val($(target_type + ' .modal-body .user.selected').html());
-							$(target).val($(target_type + ' .modal-body .user.selected + .mb_nick').html());
-							center_search = true;
-						}else{
-							$(target).val($(target_type + ' .modal-body .user.selected').html());
-							recommend_search = true;
-							$('#reg_mb_center').val($(target_type + ' .modal-body .user.selected').html());
-						}
-						$(target).attr("readonly",true);
-						$(target_type).modal('hide');
-					});
 
-				} else {
+	// 				$(target_type + ' .modal-footer #btnSave').click(function() {
 
-					dialogModal('처리 결과', '해당되는 회원이 없습니다.', 'failed');
-				}
-			}
-		});
+	// 					if(type == 2){
+	// 						$('#reg_mb_center_nick').val($(target_type + ' .modal-body .user.selected').html());
+	// 						$(target).val($(target_type + ' .modal-body .user.selected + .mb_nick').html());
+	// 						center_search = true;
+	// 					}else{
+	// 						$(target).val($(target_type + ' .modal-body .user.selected').html());
+	// 						recommend_search = true;
+	// 						$('#reg_mb_center').val($(target_type + ' .modal-body .user.selected').html());
+	// 					}
+	// 					$(target).attr("readonly",true);
+	// 					$(target_type).modal('hide');
+	// 				});
 
-	} ///*추천인등록*/
+	// 			} else {
+
+	// 				dialogModal('처리 결과', '해당되는 회원이 없습니다.', 'failed');
+	// 			}
+	// 		}
+	// 	});
+
+	// } ///*추천인등록*/
 
 
 
@@ -547,36 +543,36 @@ if ($_GET['recom_referral']){
 		}
 		*/
 
-		console.log(`센터검색 : ${center_search}\n센터: ${f.mb_center.value}`);
+		// console.log(`센터검색 : ${center_search}\n센터: ${f.mb_center.value}`);
 		
 
 		//추천인 검사
-		if (f.mb_recommend.value == '' || f.mb_recommend.value == 'undefined') {
-			dialogModal('추천인정보 확인', "<strong>추천인 아이디 검색하여 목록에서 선택해주세요.</strong>", 'warring');
-			return false;
-		}
-		if (!recommend_search) {
-			dialogModal('추천인정보 확인', "<strong>추천인 아이디 검색하여 목록에서 선택해주세요.</strong>", 'warring');
-			return false;
-		}
+		// if (f.mb_recommend.value == '' || f.mb_recommend.value == 'undefined') {
+		// 	dialogModal('추천인정보 확인', "<strong>추천인 아이디 검색하여 목록에서 선택해주세요.</strong>", 'warring');
+		// 	return false;
+		// }
+		// if (!recommend_search) {
+		// 	dialogModal('추천인정보 확인', "<strong>추천인 아이디 검색하여 목록에서 선택해주세요.</strong>", 'warring');
+		// 	return false;
+		// }
 
 
 		//센터멤버 검사
-		if (f.mb_center.value == '' || f.mb_center.value == 'undefined') {
-			dialogModal('센터정보 확인', "<strong>센터명 또는 센터 아이디를 검색하여 목록에서 선택해주세요.</strong>", 'warring');
-			return false;
-		}
-		if (!center_search) {
-			commonModal('센터정보 확인', '<strong>센터정보를 검색하여 선택해 주세요.</strong>', 80);
-			return false;
-		}
+		// if (f.mb_center.value == '' || f.mb_center.value == 'undefined') {
+		// 	dialogModal('센터정보 확인', "<strong>센터명 또는 센터 아이디를 검색하여 목록에서 선택해주세요.</strong>", 'warring');
+		// 	return false;
+		// }
+		// if (!center_search) {
+		// 	commonModal('센터정보 확인', '<strong>센터정보를 검색하여 선택해 주세요.</strong>', 80);
+		// 	return false;
+		// }
 		
 		//추천인이 본인인지 확인
-		if (f.mb_id.value == f.mb_recommend.value) {
-			commonModal('조직 관계 입력 확인', '<strong> 자신을 추천인으로 등록할수없습니다. </strong>', 80);
-			f.mb_recommend.focus();
-			return false;
-		}
+		// if (f.mb_id.value == f.mb_recommend.value) {
+		// 	commonModal('조직 관계 입력 확인', '<strong> 자신을 추천인으로 등록할수없습니다. </strong>', 80);
+		// 	f.mb_recommend.focus();
+		// 	return false;
+		// }
 
 		// 이름
 		if (f.mb_name.value == '' || f.mb_name.value == 'undefined') {
@@ -645,7 +641,7 @@ if ($_GET['recom_referral']){
 			}
 		});
 		
-		// f.submit();
+		f.submit();
 
 	}
 </script>
@@ -671,7 +667,7 @@ if ($_GET['recom_referral']){
 			</div> -->
 
 			<!-- 추천인 정보 -->
-			<p class="check_appear_title mt10"><span>추천인정보</span></p>
+			<!-- <p class="check_appear_title mt10"><span>추천인정보</span></p>
 			<section class='referzone'>
 				<div class="btn_input_wrap">
 					<input type="text" name="mb_recommend" id="reg_mb_recommend" value="<?= $mb_recommend ?>" required placeholder="추천인 아이디" />
@@ -681,10 +677,10 @@ if ($_GET['recom_referral']){
 					
 				</div>
 				
-			</section>
+			</section> -->
 
 			<!-- 센터 정보 -->
-			<p class="check_appear_title mt20"><span >센터정보</span></p>
+			<!-- <p class="check_appear_title mt20"><span >센터정보</span></p>
 				<section class='referzone'>
 					<div class="btn_input_wrap">
 						<input type="hidden" name="mb_center_nick" id="reg_mb_center_nick" value=""  required  />
@@ -696,7 +692,7 @@ if ($_GET['recom_referral']){
 						</div>
 					</div>
 				</section>
-				<i style="color:rgba(255,255,255,0.4)">※센터정보 검색후 선택해주세요.</i>
+				<i style="color:rgba(255,255,255,0.4)">※센터정보 검색후 선택해주세요.</i> -->
 
 
 			<!-- <p class="check_appear_title mt40"><span data-i18n='signUp.일반정보'>General Information</span></p> -->
@@ -716,20 +712,21 @@ if ($_GET['recom_referral']){
 				<input type="text" name="mb_hp"  id="reg_mb_hp" class='cabinet'  pattern="[0-9]*" style='padding:15px' required  placeholder="휴대폰번호"/>
 				<span class='cabinet_inner' style=''>※'-'를 제외한 숫자만 입력해주세요</span>
 				<!-- <label class='prev_icon'><i class="ri-smartphone-line"></i></label> -->
-				
+
+		
 			</div>
 
 			
 
 			<ul class="clear_fix pw_ul mt20">
 				<li>
-					<input type="password" name="mb_password" id="reg_mb_password" minlength="4" placeholder="로그인 비밀번호" />
-					<input type="password" name="mb_password_re" id="reg_mb_password_re" minlength="4" placeholder="로그인 비밀번호 확인" />
+					<input type="password" name="mb_password" id="reg_mb_password" minlength="8" maxlength="16" placeholder="로그인 비밀번호" />
+					<input type="password" name="mb_password_re" id="reg_mb_password_re" minlength="8" maxlength="16" placeholder="로그인 비밀번호 확인" />
 
 					<strong><span class='mb10' style='display:block;font-size:13px;'>강도 높은 비밀번호 설정 조건</span></strong>
 					<ul>
-						<li class="x_li" id="pm_1" >4자 이상 20자 이하</li>
-						<li class="x_li" id="pm_3" >숫자+영문</li>
+						<li class="x_li" id="pm_1" >8자 이상 16자 이하</li>
+						<li class="x_li" id="pm_3" >영문+숫자+특수문자</li>
 						<li class="x_li" id="pm_5" >비밀번호 비교</li>
 					</ul>
 				</li>
@@ -746,27 +743,7 @@ if ($_GET['recom_referral']){
 				</li>
 			</ul>
 
-
-			<!-- 폰인증
-			<section id="personal">
-				<div>
-					<span style='display:block;margin-left:10px;' class='' data-i18n='signUp.핸드폰 번호'> Phone number</span>
-					<input type="text" name="mb_hp"  id="reg_mb_hp"  pattern="[09]*" placeholder="Phone number" value='' data-i18n='[placeholder]signUp.핸드폰 번호'/>
-					<label class='phone_num'><i class="ri-smartphone-line"></i></label>
-				</div>
-					<?if($phone_auth > 1){?>
-					<div class="clear_fix ecode_div">
-					<div class="verify_phone">
-						<input type="text" placeholder="Enter Phone Authtication Code"/>
-						<a href="javascript:void(0)" class=""  id="sendSms">
-							<img src="<?= G5_THEME_URL ?>/_images/email_send_icon.gif" alt="이메일코드">
-							Enter Phone Authtication Code
-						</a>
-						</div>
-					</div>
-					<?}?>
-			</section>
-			-->
+			
 
 			<!--
 			<hr>
